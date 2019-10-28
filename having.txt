@@ -1,0 +1,78 @@
+
+
+
+SQL> Select dept_name,count(name),avg(salary)
+  2  from instructor group by dept_name;
+
+DEPT_NAME            COUNT(NAME) AVG(SALARY)
+-------------------- ----------- -----------
+Comp.Sci                       3  77333.3333
+Music                          1       40000
+Physics                        2       91000
+Finance                        2       85000
+Biology                        1       72000
+History                        2       61000
+Elec.Eng                       1       80000
+
+7 rows selected.
+
+
+SQL> select course_id,count(id),semester from takes group by course_id,semester;
+
+
+COURSE_ID   COUNT(ID) SEMESTER
+---------- ---------- --------------------
+CS-347              2 Fall
+CS-190              2 Spring
+CS-315              1 Spring
+CS-319              1 Spring
+CS-101              4 Fall
+CS-101              1 Spring
+PHY-101             1 Fall
+HIS-351             1 Spring
+FIN-201             1 Spring
+
+9 rows selected.
+
+
+SQL> select course_id,semester,count(id) from takes group by course_id,semester
+having count(id)>2;
+
+COURSE_ID  SEMESTER              COUNT(ID)
+---------- -------------------- ----------
+CS-101     Fall                          4
+
+
+SQL> select t.course_id,i.name,i.dept_name,count(t.course_id) from instructor i,
+ teaches t where i.id=t.id group by i.dept_name,i.name,t.course_id,t.id;
+
+COURSE_ID  NAME                 DEPT_NAME            COUNT(T.COURSE_ID)
+---------- -------------------- -------------------- ------------------
+EE-181     Kim                  Elec.Eng                              1
+MU-199     Mozart               Music                                 1
+PHY-101    Einstein             Physics                               1
+CS-319     Brandt               Comp.Sci                              1
+FIN-201    Wu                   Finance                               1
+CS-319     Katz                 Comp.Sci                              1
+BIO-301    Crick                Biology                               1
+CS-101     Srinivasan           Comp.Sci                              1
+BIO-101    Crick                Biology                               1
+CS-101     Katz                 Comp.Sci                              1
+CS-190     Brandt               Comp.Sci                              2
+
+COURSE_ID  NAME                 DEPT_NAME            COUNT(T.COURSE_ID)
+---------- -------------------- -------------------- ------------------
+CS-315     Srinivasan           Comp.Sci                              1
+CS-347     Srinivasan           Comp.Sci                              1
+HIS-351    El Said              History                               1
+
+14 rows selected.
+
+
+SQL> select i.dept_name,count(*) from instructor i inner join(select dept_name f
+rom instructor group by dept_name having count(*)>2) b on i.dept_name=b.dept_nam
+e where salary>80000 group by i.dept_name;
+
+DEPT_NAME              COUNT(*)
+-------------------- ----------
+Comp.Sci                      1

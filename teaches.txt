@@ -1,0 +1,8 @@
+
+SQL> select distinct semester from teaches;
+
+SEMESTER
+--------------------
+Spring
+Summer
+Fall

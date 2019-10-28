@@ -1,0 +1,25 @@
+
+SQL> create view yearview as select * from section where year=2009;
+
+View created.
+
+SQL> select * from yearwise;
+select * from yearwise
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+
+SQL> select * from yearview;
+
+COURSE_ID      SEC_ID SEMESTER         YEAR BUILDING   ROOM_NUMBER
+---------- ---------- ---------- ---------- ---------- -----------
+BIO-101             1 Summer           2009 Painter            514
+CS-101              1 Fall             2009 Packard            101
+CS-190              1 Spring           2009 Taylor            3128
+CS-190              2 Spring           2009 Taylor            3128
+CS-347              1 Fall             2009 Taylor            3128
+EE-181              1 Spring           2009 Taylor            3128
+PHY-101             1 Fall             2009 Watson             100
+
+7 rows selected.

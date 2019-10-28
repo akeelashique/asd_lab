@@ -1,0 +1,114 @@
+
+SQL> select * from student where name like '___';
+
+        ID NAME       DEPT_NAME              TOT_CRED
+---------- ---------- -------------------- ----------
+     76653 Aoi        Elec.Eng                     60
+
+
+SQL> grant select on student to public;
+
+Grant succeeded.
+
+
+SQL> revoke all on student from public;
+
+Revoke succeeded.
+
+SQL> grant all on student to public;
+
+Grant succeeded.
+
+
+SQL> update student set name='john' where id=44553;
+
+1 row updated.
+
+SQL> commit;
+
+Commit complete.
+
+
+SQL> update student set name='peter' where id=44553;
+
+1 row updated.
+
+
+SQL> rollback;
+
+Rollback complete.
+
+
+SQL> insert into student values(00007,'Akeel','history',70);
+
+1 row created.
+
+SQL> update student set name='ajay' where id=00007;
+
+1 row updated.
+
+SQL> savepoint akeel;
+
+Savepoint created.
+
+SQL> update student set name='akash' where id=00007;
+
+1 row updated.
+
+SQL> rollback to akeel;
+
+Rollback complete.
+
+SQL> select * from student;
+
+        ID NAME       DEPT_NAME              TOT_CRED
+---------- ---------- -------------------- ----------
+     19991 Brandt     History                      80
+     23121 Chavez     Finance                     110
+     44553 john       Physics                      56
+     45678 Levy       Physics                      46
+     54321 Williams   Comp.Sci                     54
+     55739 Sanchez    Music                        38
+     70557 Snow       Physics                       0
+     76543 Brown      Comp.Sci                     58
+     76653 Aoi        Elec.Eng                     60
+     98765 Bourikas   Elec.Eng                     98
+     98988 Tanaka     Biology                     120
+
+        ID NAME       DEPT_NAME              TOT_CRED
+---------- ---------- -------------------- ----------
+       128 Zhang      Comp.Sci                    102
+     12345 Shankar    Comp.Sci                     32
+         7 ajay       history                      70
+
+14 rows selected.
+
+
+SQL> create view studentlist as select * from student order by name ;
+
+View created.
+
+SQL> select * from studentlist;
+
+        ID NAME       DEPT_NAME              TOT_CRED
+---------- ---------- -------------------- ----------
+     76653 Aoi        Elec.Eng                     60
+     98765 Bourikas   Elec.Eng                     98
+     19991 Brandt     History                      80
+     76543 Brown      Comp.Sci                     58
+     23121 Chavez     Finance                     110
+     45678 Levy       Physics                      46
+     55739 Sanchez    Music                        38
+     12345 Shankar    Comp.Sci                     32
+     70557 Snow       Physics                       0
+     98988 Tanaka     Biology                     120
+     54321 Williams   Comp.Sci                     54
+
+        ID NAME       DEPT_NAME              TOT_CRED
+---------- ---------- -------------------- ----------
+       128 Zhang      Comp.Sci                    102
+         7 ajay       history                      70
+     44553 john       Physics                      56
+
+14 rows selected.
+

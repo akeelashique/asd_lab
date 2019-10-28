@@ -1,0 +1,31 @@
+SQL> update takes
+  2  set grade='B'
+  3  where id=45678 and course_id='CS-101';
+2 rows updated
+
+SQL> update takes
+  2  set semester='Fall'
+  3  where course_id='MU-199';
+0 rows updated.
+
+SQL> update takes
+  2  set year=2010
+  3  where id=44553;
+
+1 row updated.
+
+
+SQL> update takes
+  2  set grade='A+'
+  3  where id=98988 and course_id='BIO-301';
+
+0 rows updated.
+
+SQL> delete from takes where grade='F';
+
+0 rows deleted.
+
+
+SQL> delete from takes where id like '551%';
+
+0 rows deleted.

@@ -1,0 +1,284 @@
+
+SQL> set serverout on;
+SQL> Declare
+  2  message varchar2(20):='hello, world';
+  3  begin
+  4  dbms_output.put_line(message);
+  5  end;
+  6  /
+hello, world
+
+PL/SQL procedure successfully completed.
+
+
+SQL> set serverout on;
+SQL> declare
+  2  v char(2):='A';
+  3  begin
+  4  if (v='A') then
+  5  dbms_output.put_line('Excellent');
+  6  elsif (v='B') then
+  7  dbms_output.put_line('Good');
+  8  elsif (v='C') then
+  9  dbms_output.put_line('Poor');
+ 10  else
+ 11  dbms_output.put_line('Fail');
+ 12  end if;
+ 13  end;
+ 14  /
+Excellent
+
+SQL> declare
+  2  type subject is varray(5) of number;
+  3  sub1 subject;
+  4  sub2 subject;
+  5  i number;
+  6  begin
+  7  sub1:=subject(10,20,30,40,50);
+  8  sub2:=subject(10,20,30,40,50);
+  9  for i in 1..5 loop
+ 10  dbms_output.put_line(sub1(i)+sub2(i));
+ 11  end loop;
+ 12  end;
+ 13  /
+20
+40
+60
+80
+100
+
+PL/SQL procedure successfully completed.
+
+
+PL/SQL procedure successfully completed.
+
+SQL> set serverout on;
+SQL> declare
+  2  num number:=5;
+  3  fact number:=1;
+  4  temp number;
+  5  begin
+  6  temp:=num;
+  7  while (num>0)
+  8  loop
+  9  fact:= fact * num;
+ 10  num :=num -1;
+ 11  end loop;
+ 12  dbms_output.put_line(fact);
+ 13  end;
+ 14  /
+     120
+
+PL/SQL procedure successfully completed.
+
+
+SQL> declare
+  2  a number:=3;
+  3  i number:=1;
+  4  begin
+  5  loop
+  6  dbms_output.put_line(a*i);
+  7  i:=i+1;
+  8  exit when i>10;
+  9  end loop;
+ 10  end;
+ 11  /
+3
+6
+9
+12
+15
+18
+21
+24
+27
+30
+
+
+
+SQL> declare
+  2  type num is varray(5) of number(6);
+  3  numb num;
+  4  begin
+  5  numb := num(33,22,55,77,66);
+  6  for i in 1..numb.count loop
+  7  if mod(numb(i),2)=0 then
+  8  insert into oe(even) values(numb(i));
+  9  else
+ 10  insert into oe(odd) values(numb(i));
+ 11  end if;
+ 12  end loop;
+ 13  end;
+ 14  /
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from oe;
+
+      EVEN        ODD
+---------- ----------
+                   33
+        22
+                   55
+                   77
+        66
+
+
+SQL> declare
+  2  numb number:=10;
+  3  begin
+  4  for i in 1..numb loop
+  5  insert into sc(square) values(power(i,2));
+  6  insert into sc(cube) values(power(i,3));
+  7  end loop;
+  8  end;
+  9  /
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from sc;
+
+    SQUARE       CUBE
+---------- ----------
+         1
+                    1
+         4
+                    8
+         9
+                   27
+        16
+                   64
+        25
+                  125
+        36
+
+    SQUARE       CUBE
+---------- ----------
+                  216
+        49
+                  343
+        64
+                  512
+        81
+                  729
+       100
+                 1000
+
+20 rows selected.
+
+
+SQL> begin
+  2  update emp set emi=emi/2 where cid=&n;
+  3  if(sql%notfound) then
+  4  dbms_output.put_line('id not found');
+  5  end if;
+  6  end;
+  7  /
+Enter value for n: 1
+old   2: update emp set emi=emi/2 where cid=&n;
+new   2: update emp set emi=emi/2 where cid=1;
+
+PL/SQL procedure successfully completed.
+
+SQL> select * from emp;
+
+       CID        EMI
+---------- ----------
+         1       5000
+         2      20000
+         3      30000
+
+
+SQL> declare
+  2  a number;
+  3  b number;
+  4  c number;
+  5  procedure findmin(x in number,y in number,z out number) is
+  6  begin
+  7  if x<y then
+  8  z:=x;
+  9  else
+ 10  z:=y;
+ 11  end if;
+ 12  end;
+ 13  begin
+ 14  findmin(&a,&b,c);
+ 15  dbms_output.put_line('min : '||c);
+ 16  end;
+ 17  /
+Enter value for a: 5
+Enter value for b: 4
+old  14: findmin(&a,&b,c);
+new  14: findmin(5,4,c);
+min : 4
+
+PL/SQL procedure successfully completed.
+
+
+SQL> declare
+  2  a number;
+  3  procedure toDec(b in number) as
+  4  i number:=0;
+  5  dec number:=0;
+  6  x number:=b;
+  7  begin
+  8  while(x>0) loop
+  9  dec:=dec+mod(x,10)*power(2,i);
+ 10  i:=i+1;
+ 11  x:=floor(x/10);
+ 12  end loop;
+ 13  dbms_output.put_line(dec);
+ 14  end;
+ 15  begin
+ 16  toDec(&a);
+ 17  end;
+ 18  /
+Enter value for a: 100
+old  16: toDec(&a);
+new  16: toDec(100);
+4
+
+PL/SQL procedure successfully completed.
+
+
+SQL> create or replace procedure quad(a in number,b in number,c in number) as
+  2  d number;
+  3  begin
+  4  d:=b*b-4*a*c;
+  5  if (d>=0) then
+  6  dbms_output.put_line('root 1 : '|| (-b+sqrt(d))/2*a);
+  7  dbms_output.put_line('root 2 : '|| (-b-sqrt(d))/2*a);
+  8  else
+  9  dbms_output.put_line('root 1 : '|| (-b/2*a) ||' +i '|| round(sqrt(abs(d)),2
+));
+ 10  dbms_output.put_line('root 2 : '|| (-b/2*a) ||' -i '|| round(sqrt(abs(d)),2
+));
+ 11  end if;
+ 12  end;
+ 13  /
+
+Procedure created.
+
+SQL> execute quad(1,2,3);
+root 1 : -1 +i 2.83
+root 2 : -1 -i 2.83
+
+PL/SQL procedure successfully completed.
+
+create or replace procedure incr(cid in number) is
+begin
+update instructor set salary=salary*1.2 where cid=id;
+if (sql%notfound) then
+dbms_output.put_line('id not found');
+end if;
+end;
+/
+
+create or replace procedure del (id in number) is
+begin
+delete from emp where cid=id;
+if (sql%notfound) then
+dbms_output.put_line('id not found');
+end if;
+end;
+/

@@ -1,0 +1,10 @@
+
+SQL> select * from course where dept_name like '%Comp%';
+
+COURSE_ID  TITLE                          DEPT_NAME               CREDITS
+---------- ------------------------------ -------------------- ----------
+CS-101     Intro. to Computer Science     Comp.Sci                      4
+CS-190     Game Design                    Comp.Sci                      4
+CS-315     Robotics                       Comp.Sci                      3
+CS-319     Image Processing               Comp.Sci                      3
+CS-347     Database System Concepts       Comp.Sci                      3
