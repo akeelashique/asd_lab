@@ -1,0 +1,91 @@
+SQL> create or replace trigger credit_update after update of credits on course f
+or each row begin
+  2  dbms_output.put_line('old credit: '||:old.credits);
+  3  dbms_output.put_line('new credit: '||:new.credits);
+  4  end;
+  5  /
+
+SQL> update course set credits=7 where course_id='BIO-101';
+old credit: 4
+new credit: 7
+
+1 row updated.
+
+SQL> create table new_sal(id varchar(20),old_sal number,new_sal number);
+
+Table created.
+
+SQL> create or replace trigger salary_update after update of salary on instructo
+r for each row
+  2  begin
+  3  insert into new_sal values(:old.id,:old.salary,:new.salary);
+  4  dbms_output.put_line('salary diff: '||(:new.salary-:old.salary));
+  5  end;
+  6  /
+
+Trigger created.
+
+SQL> update instructor set salary= 100000 where id=76543;
+salary diff: 20000
+
+1 row updated.
+
+SQL> select * from new_sal;
+
+ID                      OLD_SAL    NEW_SAL
+-------------------- ---------- ----------
+76543                     80000     100000
+  
+
+SQL> create or replace trigger course_ins before insert on course for each row w
+hen(new.credits<3)
+  2  begin
+  3  RAISE_APPLICATION_ERROR(-20000,'oops credits cant be less than 3');
+  4  end;
+  5  /
+
+Trigger created.
+
+SQL> insert into course  values('eco-101','intro to economics','finance',2);
+insert into course  values('eco-101','intro to economics','finance',2)
+            *
+ERROR at line 1:
+ORA-20000: oops credits cant be less than 3
+ORA-06512: at "R508.COURSE_INS", line 2
+ORA-04088: error during execution of trigger 'R508.COURSE_INS'
+
+SQL> create or replace trigger takes_trig before delete on takes for each row wh
+en(old.year = 2009 and old.semester='Fall')
+  2    begin
+  3    RAISE_APPLICATION_ERROR(-20000,'oops cant delete row with year=2009 and s
+emester fall');
+  4    end;
+  5  /
+
+Trigger created.
+
+
+SQL> delete from takes where id=45678;
+delete from takes where id=45678
+            *
+ERROR at line 1:
+ORA-20000: oops cant delete row with year=2009 and semester fall
+ORA-06512: at "R508.TAKES_TRIG", line 2
+ORA-04088: error during execution of trigger 'R508.TAKES_TRIG'
+
+
+SQL> drop trigger credit_update;
+
+Trigger dropped.
+
+SQL> drop trigger salary_update;
+
+Trigger dropped.
+
+SQL> drop trigger course_ins;
+
+Trigger dropped.
+
+SQL> drop trigger takes_trig;
+
+Trigger dropped.
